@@ -345,8 +345,12 @@ resolve_password_from_secret
 collect_env_info
 #add_self $fe_addr || exit $?
 check_and_register $fe_addrs
-./doris-debug --component be
+#./doris-debug --component be
 log_stderr "run start_be.sh"
+ulimit -c unlimited
 # the server will start in the current terminal session, and the log output and console interaction will be printed to that terminal
 # sine doris 2.0.2 ,doris start with : start_xx.sh --console  doc: https://doris.apache.org/docs/dev/install/standard-deployment/#version--202
 $DORIS_HOME/bin/start_be.sh --console
+`ls /opt/apache-doris/* | grep core | xargs -I {} cp {} /opt/apache-doris/be/log/`
+`ls /opt/apache-doris/be/* | grep core | xargs -I {} cp {} /opt/apache-doris/be/log/`
+./doris-debug --component be
